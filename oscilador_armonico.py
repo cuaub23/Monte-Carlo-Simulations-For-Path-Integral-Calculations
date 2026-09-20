@@ -1,3 +1,4 @@
+from algoritmoMCMC import accion, metropolis, propagador_MCMC
 def potencial_oscilador_armonico(x, m, omega=1):
     return 0.5*m*(omega**2)*(x**2)
 
