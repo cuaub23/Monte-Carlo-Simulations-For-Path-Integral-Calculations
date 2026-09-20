@@ -68,7 +68,7 @@ Para validar la robustez del algoritmo, se evaluaron tres sistemas físicos dist
 ### Animación de la Cadena de Markov
 A continuación, se muestra el proceso de termalización de las trayectorias convergiendo hacia los estados de mínima acción mediante el algoritmo de Metropolis:
 
-*(Nota: Inserta aquí el GIF de tu animación en GitHub usando: `![Animación Metropolis](ruta/a/tu/animacion.gif)`)*
+[Animación Metropolis](animacion_trayectorias.gif)
 
 ## Estructura del Repositorio y Uso
 
