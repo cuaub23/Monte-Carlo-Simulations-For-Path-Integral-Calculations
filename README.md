@@ -69,3 +69,16 @@ Para validar la robustez del algoritmo, se evaluaron tres sistemas físicos dist
 A continuación, se muestra el proceso de termalización de las trayectorias convergiendo hacia los estados de mínima acción mediante el algoritmo de Metropolis:
 
 *(Nota: Inserta aquí el GIF de tu animación en GitHub usando: `![Animación Metropolis](ruta/a/tu/animacion.gif)`)*
+
+## Estructura del Repositorio y Uso
+
+Este proyecto ofrece dos formas de explorar las simulaciones, dependiendo del nivel de detalle que busques:
+
+1. **El Notebook Interactivo (`notebook.ipynb`)**: 
+   Es el documento principal y el punto de partida recomendado. Contiene toda la fundamentación teórica (matemática y física), la construcción paso a paso del algoritmo de Metropolis y la ejecución detallada de todos los casos de estudio (oscilador armónico, pozo infinito, etc.) junto con sus visualizaciones. Ideal para entender el "porqué" del proyecto.
+
+2. **Los Scripts de Python (`.py`)**: 
+   Si prefieres evaluar el código fuente o ejecutar las simulaciones directamente desde la terminal, el repositorio incluye scripts independientes para cada caso de estudio. Cada archivo `.py` es autocontenido: incluye las funciones del algoritmo MCMC y la configuración específica del potencial físico a simular. 
+
+**Para ejecutar localmente:**
+Solo necesitas tener instalados `numpy` y `matplotlib`. Puedes clonar el repositorio y correr cualquiera de los scripts individuales en tu terminal, o abrir el *notebook* para correr las celdas de forma interactiva.
