@@ -61,12 +61,60 @@ El script `algoritmoMCMC.py` consta de tres funciones principales:
 
 Para validar la robustez del algoritmo, se evaluaron tres sistemas físicos distintos, logrando reproducir los comportamientos esperados para el estado base:
 
-1. **Oscilador Armónico Cuántico:** Se validó que la distribución de probabilidad recupere la campana de Gauss característica del estado fundamental.
-2. **Pozo de Potencial Infinito:** Las trayectorias respetan las fronteras rígidas del pozo, mostrando la densidad de probabilidad confinada del estado base.
-3. **Potencial Arbitrario:** Se implementó un potencial de prueba personalizado para demostrar la adaptabilidad del código a terrenos no triviales donde no hay solución analítica sencilla.
+1. **Oscilador Armónico Cuántico:** Dado 
 
-### Animación de la Cadena de Markov
-A continuación, se muestra el proceso de termalización de las trayectorias convergiendo hacia los estados de mínima acción mediante el algoritmo de Metropolis:
+$$
+V(x) = \frac{1}{2}m v^2 + \frac{1}{2}\omega^2 x^2
+$$
+
+Para $m=1, x_i=0, x_f=0, \tau \in (0.2, 2), n=500, M=500, \text{pasosm}=30, \delta=0.3$ se obtuvo lo siguiente:
+
+> [!IMPORTANT]
+> **Resultados del Estado Base ($E_0$)**
+> - **$E_0$ numérico:** 0.4834
+> - **$E_0$ exacto:** 0.5 
+> - **Error relativo:** 3.32%
+
+Esto se puede replicar ejecutando el archivo [oscilador_armonico.py](oscilador_armonico.py).
+
+2. **Pozo de Potencial Infinito:** Dado 
+
+$$
+V(x) = 
+\begin{cases}
+0 \ \text{si} \ |x| < 1 \\
+\infty \ \text{en otro caso}
+\end{cases}
+$$
+
+Para $m=1, x_i=0.5, x_f=0.5, \tau \in (0.5, 2), n=10000, M=10000, \text{pasosm}=500, \delta=0.1$ se obtuvo lo siguiente:
+
+> [!IMPORTANT]
+> **Resultados del Estado Base ($E_0$)**
+> - **$E_0$ numérico:** 4.7284
+> - **$E_0$ exacto:** 4.9348
+> - **Error relativo:** 4.18%
+
+Esto se puede replicar ejecutando el archivo [pozo_infinito.py](pozo_infinito.py).
+
+3. **Potencial 'Calabera':** Dado
+
+$$
+V(x) = 10 \ \sin ( \pi x)^2 + x^4
+$$
+
+Para $m=1, x_i=0.5, x_f=0.5, \tau \in (0.5, 2), n=5000, M=5000, \text{pasosm}=200, \delta=0.1$ se obtuvo lo siguiente:
+
+> [!IMPORTANT]
+> **Resultados del Estado Base ($E_0$)**
+> - **$E_0$ numérico por MCMC:** 12.7694
+> - **$E_0$ numérico por diferencias finitas:** 12.3592
+> - **Error relativo:** 3.32%
+
+Esto se puede replicar ejecutando el archivo [pozo_cal.py](pozo_cal.py).
+
+### Animación de trayectorias
+A continuación, se muestran las trayectorias generadas para el caso del oscilador armónico:
 
 [Animación Metropolis](animacion_trayectorias.gif)
 
