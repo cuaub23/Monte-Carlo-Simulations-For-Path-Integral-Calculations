@@ -1,48 +1,71 @@
 # Monte-Carlo-Simulations-For-Path-Integral-Calculations
-En este proyecto se calcula mediante un algoritmo metropolis las llamadas integrales de caminos de Feynman que matematicamente son integrales funcionales, es decir, integrales sobre un espacio de fuciones en lugar de espacios como $\mathbb{R}^N$ o $\mathbb{C}^N$.
 
-El notebook {notebook}() cuenta con la informacion matematica y fisica necesaria para el entendimiento. Por otro lado, aqui solo se desarrolla la idea algoritmica para lograr este cometido.
+En este proyecto se calculan, mediante un algoritmo de Metropolis (MCMC), las llamadas integrales de camino de Feynman. Matemáticamente, estas son integrales funcionales; es decir, integrales sobre un espacio de funciones en lugar de espacios finito-dimensionales como $\mathbb{R}^N$ o $\mathbb{C}^N$.
 
-En fisica cuantica podemos expresar un propagador $\langle x_f, t_f | x_i, t_i \rangle$ de la siguiente manera 
+El archivo `notebook.ipynb` contiene la información matemática y física necesaria para una comprensión profunda del método. En este documento se desarrolla principalmente la arquitectura algorítmica empleada para lograr este cometido.
 
-$$
-\braket{x_f,t_f| x_i,t_i} = \int_{x_i}^{x_f} \mathcal{D}[x(t)] \exp \left( \frac{i}{\hbar} \int_{x_i}^{x_f} dt \, L_{clásico}(x,\dot{x}) \right) 
-$$
+## Tecnologías Usadas
+* **Python**: Lenguaje principal de simulación.
+* **NumPy**: Para el manejo eficiente de arrays, trayectorias discretizadas y generación de números aleatorios.
+* **Matplotlib / FuncAnimation**: Para la visualización de resultados, densidades de probabilidad y renderizado de animaciones de las trayectorias de Markov.
 
-donde se define la medida funcional $\mathcal{D}[x(t)]$:
+---
 
-$$
-\mathcal{D}[x(t)] = \lim_{(n, \epsilon) \to (\infty, 0)} \left( \frac{m}{2 \pi i \hbar \epsilon} \right)^{\frac{n}{2}} \int dx_{n-1} \int dx_{n-2} ... \int dx_1 
-$$
+## Fundamento Físico y Matemático
 
-y $L_{clásico}$ se define como 
+En física cuántica, podemos expresar un propagador $\langle x_f, t_f \mid x_i, t_i \rangle$ de la siguiente manera:
 
-$$
-L_{clásico} = \frac{1}{2}mv^2 - V(x),
-$$
+$$\langle x_f, t_f \mid x_i, t_i \rangle = \int_{x_i}^{x_f} \mathcal{D}[x(t)] \exp \left( \frac{i}{\hbar} \int_{x_i}^{x_f} dt \, L_{\text{clásico}}(x,\dot{x}) \right)$$
 
-siendo $m$ la masa de la particula, $v$ su velocidad y $V(x)$ una funcion suave que decae en el infinito. 
+donde la medida funcional $\mathcal{D}[x(t)]$ se define como:
 
-## Importancia del proyecto
-Fisicamente es importante ya que nos permite abordar problemas de cierta indole de manera mas sencilla. Sin embargo, solo se ha calculado analiticamente para ciertos casos por lo que es necesario abordar la aproximacion numerica.
+$$\mathcal{D}[x(t)] = \lim_{(n, \epsilon) \to (\infty, 0)} \left( \frac{m}{2 \pi i \hbar \epsilon} \right)^{\frac{n}{2}} \int dx_{n-1} \int dx_{n-2} \dots \int dx_1$$
 
-Dentro del notebook se aproxima primeramente como integrales sobre $\mathbb{R}^N$ cuando $N \to \infty$ pero esto no resulta ya que son demasiados calculos para una mala aproximacion como se muestra ahi. 
+y $L_{\text{clásico}}$ es el lagrangiano del sistema, definido como:
 
-## Algoritmo 
-Primeramente es de mencionar que este programa calcula las integrales de camino en tiempos imaginarios $t \to -i \tau$. Este caso sigue siendo relevante ya que nos permite obtener el espectro de energias en particular es util para obtener el estado base $E_0$. 
-Para el calculo de estas integrale haremos uso de las aproximaciones Monte Carlo. Sea $(X_i)_{i=1}^N$ un conjunto de variables aleatorias, independientes e idénticamente distribuidas, entonces para una función $g(\mathbb{X})$ se cumple  
+$$L_{\text{clásico}} = \frac{1}{2}mv^2 - V(x),$$
 
-$$  
-\begin{align}
-G_N = \int g(\mathbb{X}) \, d\mathbb{X} \\
-G_N \approx \frac{1}{N} \sum_{i=1}^{N} g(X_i)  
-\end{align}
-$$  
+siendo $m$ la masa de la partícula, $v$ su velocidad y $V(x)$ el potencial al que está sometida.
 
-Esto nos permite aproximar la integral de caminos de la siguiente manera:
+Físicamente, este enfoque es valioso porque permite abordar problemas complejos de manera sistemática. Sin embargo, dado que estas integrales solo tienen soluciones analíticas exactas para casos muy específicos, es indispensable recurrir a métodos de aproximación numérica. (En el *notebook* adjunto, se demuestra cómo una aproximación ingenua sobre $\mathbb{R}^N$ resulta computacionalmente ineficiente).
 
-$$  
- \int_{x_i}^{x_f}  \mathcal{D}[x(t)] \exp \left( \frac{i}{\hbar} \int_{x_i}^{x_f} dt \, L_{clásico}(x,\dot{x}) \right)  \approx \frac{1}{M} \sum_{j=0}^{M} \exp\left(- \sum_{i=0}^{n-1} \left[ \frac{m}{2} \left( \frac{y_{i+1}^j - y_i^j}{\Delta \tau} \right)^2 + V(y_i^j ) \right] \Delta \tau \right)  
-$$  
+## Implementación del Algoritmo (Metropolis MCMC)
 
-En donde $n-1$ es el número de variables y $M$ es el número de trayectorias aleatorias, independientes e idénticamente distribuidas.
+Este programa calcula las integrales de camino en **tiempo imaginario** ($t \to -i \tau$). Esta transformación (rotación de Wick) convierte la integral oscilatoria cuántica en una integral con un peso exponencial real, equivalente a un ensamble estadístico de la mecánica clásica. Este método es ideal para obtener el estado base $E_0$.
+
+Al aplicar la transformación a tiempo imaginario, la acción se vuelve euclidiana y la integral se puede aproximar usando Monte Carlo:
+
+$$\int_{x_i}^{x_f} \mathcal{D}[x(\tau)] \exp \left( - \frac{S_E}{\hbar} \right) \approx \frac{1}{M} \sum_{j=0}^{M} \exp\left(- \sum_{i=0}^{n-1} \left[ \frac{m}{2} \left( \frac{y_{i+1}^j - y_i^j}{\Delta \tau} \right)^2 + V(y_i^j ) \right] \Delta \tau \right)$$
+
+donde $n-1$ es el número de discretizaciones temporales y $M$ es el número de trayectorias aleatorias generadas.
+
+Para evitar el gasto computacional de trayectorias aleatorias con acción altísima (que no aportan físicamente), aplicamos el **Algoritmo de Metropolis**. Este genera una cadena de Markov que muestrea preferentemente las trayectorias físicamente relevantes. 
+
+Si proponemos un cambio local a la trayectoria (un paseo gaussiano simétrico), la probabilidad de aceptar la nueva configuración $X$ desde la actual $Y$ es:
+
+$$A(X \mid Y) = \min\left(1, \exp\left(-(S_{\text{nuevo}} - S_{\text{viejo}})\right) \right)$$
+
+El algoritmo genera un número aleatorio $u \in [0, 1)$ y se acepta la nueva trayectoria si $u < A$.
+
+### Estructura del Código
+
+El script `algoritmoMCMC.py` consta de tres funciones principales:
+
+1. **`accion(path, dtau, potencial, m)`**: Calcula la acción euclidiana discreta $S_E$ de una trayectoria `path` dada.
+2. **`metropolis(xi, xf, n, pasos_m, m, delta, potencial, dtau)`**: Partiendo de una trayectoria inicial, selecciona un punto intermedio aleatorio $j$ y le aplica un desplazamiento gaussiano $y_j = x_j + \mathcal{N}(0, \delta)$. Se evalúa la condición de aceptación $u < \exp(-(S_{\text{nuevo}} - S_{\text{viejo}}))$ para reemplazar el punto. Este "barrido" se repite `pasos_m` veces.
+3. **`propagador_MCMC(m, xi, xf, tau, n, M, pasos_m, delta, potencial)`**: Orquesta la simulación general. Genera $M$ trayectorias termalizadas independientes mediante la función anterior y las promedia para aproximar la integral funcional.
+
+---
+
+## Casos de Estudio y Resultados
+
+Para validar la robustez del algoritmo, se evaluaron tres sistemas físicos distintos, logrando reproducir los comportamientos esperados para el estado base:
+
+1. **Oscilador Armónico Cuántico:** Se validó que la distribución de probabilidad recupere la campana de Gauss característica del estado fundamental.
+2. **Pozo de Potencial Infinito:** Las trayectorias respetan las fronteras rígidas del pozo, mostrando la densidad de probabilidad confinada del estado base.
+3. **Potencial Arbitrario:** Se implementó un potencial de prueba personalizado para demostrar la adaptabilidad del código a terrenos no triviales donde no hay solución analítica sencilla.
+
+### Animación de la Cadena de Markov
+A continuación, se muestra el proceso de termalización de las trayectorias convergiendo hacia los estados de mínima acción mediante el algoritmo de Metropolis:
+
+*(Nota: Inserta aquí el GIF de tu animación en GitHub usando: `![Animación Metropolis](ruta/a/tu/animacion.gif)`)*
