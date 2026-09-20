@@ -1,4 +1,4 @@
-
+from algoritmoMCMC import accion, metropolis, propagador_MCMC
 def pozo_inf(x, m, L=1.0):
     if x <= 0.0 or x >= L:
         return np.inf 
