@@ -2,7 +2,7 @@
 
 En este proyecto se calculan, mediante un algoritmo de Metropolis (MCMC), las llamadas integrales de camino de Feynman. Matemáticamente, estas son integrales funcionales; es decir, integrales sobre un espacio de funciones en lugar de espacios finito-dimensionales como $\mathbb{R}^N$ o $\mathbb{C}^N$.
 
-El archivo `notebook.ipynb` contiene la información matemática y física necesaria para una comprensión profunda del método. En este documento se desarrolla principalmente la arquitectura algorítmica empleada para lograr este cometido.
+El archivo `Proyecto_Integral_de_Caminos.ipynb` contiene la información matemática y física necesaria para una comprensión profunda del método. En este documento se desarrolla principalmente la arquitectura algorítmica empleada para lograr este cometido.
 
 ## Tecnologías Usadas
 * **Python**: Lenguaje principal de simulación.
