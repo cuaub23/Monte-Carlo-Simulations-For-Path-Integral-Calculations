@@ -122,7 +122,7 @@ A continuación, se muestran las trayectorias generadas para el caso del oscilad
 
 Este proyecto ofrece dos formas de explorar las simulaciones, dependiendo del nivel de detalle que busques:
 
-1. **El Notebook Interactivo (`notebook.ipynb`)**: 
+1. **El Notebook Interactivo (`Proyecto_Integral_de_Caminos.ipynb`)**: 
    Es el documento principal y el punto de partida recomendado. Contiene toda la fundamentación teórica (matemática y física), la construcción paso a paso del algoritmo de Metropolis y la ejecución detallada de todos los casos de estudio (oscilador armónico, pozo infinito, etc.) junto con sus visualizaciones. Ideal para entender el "porqué" del proyecto.
 
 2. **Los Scripts de Python (`.py`)**: 
